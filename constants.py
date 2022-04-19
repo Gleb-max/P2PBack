@@ -21,6 +21,9 @@ query ($address: String!, $limit: Int!, $offset: Int!, $till: ISO8601DateTime) {
       }
       smartContract {
         contractType
+        currency {
+          symbol
+        }
       }
       address: caller {
         address
