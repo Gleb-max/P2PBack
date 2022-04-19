@@ -11,12 +11,7 @@ def authorized_api_request(_type='POST', **kwargs) -> requests.Response:
 
 def api_search(t: str):
     data = {
-        "limit": 1000,
-        "offset": 0,
-        "address": t,
-        "from": None,
-        "till": None,
-        "dateFormat": "%Y-%m"
+        "tx": t,
     }
     r = authorized_api_request(json={
         'query': constants.SEARCH_QUERY,
