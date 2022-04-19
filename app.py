@@ -5,7 +5,7 @@ import utils
 app = Flask(__name__)
 
 
-@app.route('/search/<transaction>')
+@app.route('/tx/<transaction>')
 def search_transaction(transaction):
     return utils.api_search(transaction)
 
