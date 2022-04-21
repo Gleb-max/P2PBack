@@ -17,18 +17,25 @@ def api_search(t: str):
     data = {
         "tx": t,
     }
-    r = authorized_api_request(json={
+    r_t = authorized_api_request(json={
         'query': constants.SEARCH_QUERY,
         'variables': data,
     })
-    if r.status_code == 200:
+    r_e = authorized_api_request(json={
+        'query': constants.EVENTS_QUERY,
+        'variables': data,
+    })
+    if r_t.status_code == 200:
         print(
-            str(r.json()).replace('\'', '"').replace('True', 'true').replace('False', 'false').replace('None', 'null'),
+            str(r_t.json()).replace('\'', '"').replace('True', 'true').replace('False', 'false').replace('None', 'null'),
             file=open('api-ans.json', 'w'))
-        return parse_tx(r.json(object_hook=lambda d: SimpleNamespace(**d)))
+        res = parse_tx(r_t.json(object_hook=lambda d: SimpleNamespace(**d)))
+        if res:
+            res['events'] = sorted(r_e.json()['data']['ethereum']['smartContractEvents'], key=lambda x: (-1,) if not x['eventIndex'] else tuple(map(int, x['eventIndex'].split('-'))))
+        return res
     else:
-        print(r.status_code)
-        print(r.text)
+        print(r_t.status_code)
+        print(r_t.text)
         return None
 
 

@@ -42,6 +42,27 @@ query ($tx: String!) {
 }
 """
 
+EVENTS_QUERY = """
+query ($tx: String!) {
+  ethereum {
+    smartContractEvents(
+      txHash: {is: $tx}
+      options: {}
+    ) {
+      smartContractEvent {
+        name
+      }
+      arguments {
+        argument
+        argumentType
+        value
+      }
+      eventIndex
+    }
+  }
+}
+"""
+
 # SEARCH_QUERY = """
 # query ($address: String!, $limit: Int!, $offset: Int!, $till: ISO8601DateTime) {
 #   ethereum {
