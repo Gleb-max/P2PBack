@@ -61,7 +61,8 @@ def parse_tx(root):
                           edge.gasValue, edge.smartContractMethod.name,
                           edge.smartContract.currency.symbol,
                           vertexes_adresses[edge.caller.address],
-                          vertexes_adresses[edge.smartContract.address.address]))
+                          vertexes_adresses[edge.smartContract.address.address],
+                          edge.callDepth))
         edge_uid += 1
     if edges:
         return {'vertexes': [{
