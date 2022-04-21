@@ -51,7 +51,7 @@ def parse_tx(root):
                           vertexes_adresses[edge.smartContract.address.address]))
         edge_uid += 1
     if edges:
-        return {'vertexes': vertexes_adresses.keys(), 'edges': edges}
+        return {'vertexes': [{'name': name, 'class': 'unknown'} for name in vertexes_adresses.keys()], 'edges': edges}
     return {}
 
 
