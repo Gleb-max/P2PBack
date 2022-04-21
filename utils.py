@@ -22,7 +22,9 @@ def api_search(t: str):
         'variables': data,
     })
     if r.status_code == 200:
-        print(r.json(), file=open('api-ans.json', 'w'))
+        print(
+            str(r.json()).replace('\'', '"').replace('True', 'true').replace('False', 'false').replace('None', 'null'),
+            file=open('api-ans.json', 'w'))
         return parse_tx(r.json(object_hook=lambda d: SimpleNamespace(**d)))
     else:
         print(r.status_code)
@@ -51,7 +53,11 @@ def parse_tx(root):
                           vertexes_adresses[edge.smartContract.address.address]))
         edge_uid += 1
     if edges:
-        return {'vertexes': [{'name': name, 'class': 'unknown'} for name in vertexes_adresses.keys()], 'edges': edges}
+        return {'vertexes': [{
+            'name': key,
+            'class': 'unknown',
+            'uid': value.uid,
+        } for key, value in vertexes_adresses.items()], 'edges': edges}
     return {}
 
 
