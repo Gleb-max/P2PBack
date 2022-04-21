@@ -32,6 +32,16 @@ def api_search(t: str):
         return None
 
 
+def get_vertex_class(edge):
+    if edge.smartContract.contractType == 'Generic':
+        return f'Smart contract ({edge.smartContract.address.annotation or "method call"})'
+    if edge.smartContract.contractType == 'Token':
+        return f'Token {edge.smartContract.currency.symbol}'
+    if edge.smartContract.contractType == 'DEX':
+        return f'Exchanger {edge.smartContract.protocolType}'
+    return 'User'
+
+
 def parse_tx(root):
     vertexes_adresses = dict()
     edges = []
@@ -39,11 +49,12 @@ def parse_tx(root):
     edge_uid = 0
     for edge in root.data.ethereum.smartContractCalls:
         if edge.caller.address not in vertexes_adresses.keys():
-            v = Vertex(vertex_uid, edge.caller.address, edge.caller.annotation)
+            v = Vertex(vertex_uid, edge.caller.address, edge.caller.annotation, get_vertex_class(edge))
             vertex_uid += 1
             vertexes_adresses[edge.caller.address] = v
         if edge.smartContract.address.address not in vertexes_adresses.keys():
-            v = Vertex(vertex_uid, edge.smartContract.address.address, edge.smartContract.address.annotation)
+            v = Vertex(vertex_uid, edge.smartContract.address.address, edge.smartContract.address.annotation,
+                       get_vertex_class(edge))
             vertex_uid += 1
             vertexes_adresses[edge.smartContract.address.address] = v
         edges.append(Edge(edge_uid,
@@ -55,7 +66,7 @@ def parse_tx(root):
     if edges:
         return {'vertexes': [{
             'name': key,
-            'class': 'unknown',
+            'class': value.cl,
             'uid': value.uid,
         } for key, value in vertexes_adresses.items()], 'edges': edges}
     return {}
@@ -63,4 +74,4 @@ def parse_tx(root):
 
 if __name__ == '__main__':
     print(api_search('0xc68d4bd2932473659213d21c6bf788d04bafe6a8f2bc4f12c2032884cddec729'))
-    print(api_search('99034'))
+    # print(api_search('99034'))

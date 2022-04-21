@@ -14,10 +14,11 @@ class Vertex(JsonSerializable):
     # annotation - тип смартконтракта (почти везде null кроме свапа)
     """
 
-    def __init__(self, uid: int, name: str, annotation: str):
+    def __init__(self, uid: int, name: str, annotation: str, cl: str):
         self.uid = uid
         self.name = name
         self.annotation = annotation
+        self.cl = cl
 
 
 class Edge(JsonSerializable):
