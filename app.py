@@ -1,12 +1,17 @@
-from flask import Flask, abort
+from flask import Flask, abort, send_from_directory
 from flask_cors import CORS, cross_origin
 import json
 
 import utils
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='frontend/build')
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+
+
+@app.route("/", defaults={'path': ''})
+def serve(path):
+    return send_from_directory(app.static_folder, 'index.html')
 
 
 @app.route('/tx/<transaction>')
