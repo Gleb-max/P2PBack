@@ -4,7 +4,7 @@ from types import SimpleNamespace
 import requests as requests
 
 import constants
-from models import Vertex, Edge
+from models import Vertex, Edge, Type
 
 
 def authorized_api_request(_type='POST', **kwargs) -> requests.Response:
@@ -56,12 +56,12 @@ def api_events(t: str):
 
 def get_vertex_class(edge):
     if edge.smartContract.contractType == 'Generic':
-        return f'Smart contract ({edge.smartContract.address.annotation or "method call"})'
+        return Type('Smart contract', edge.smartContract.address.annotation or "method call")
     if edge.smartContract.contractType == 'Token':
-        return f'Token {edge.smartContract.currency.symbol}'
+        return Type('Token', edge.smartContract.currency.symbol)
     if edge.smartContract.contractType == 'DEX':
-        return f'Exchanger {edge.smartContract.protocolType}'
-    return 'User'
+        return Type('Exchanger', edge.smartContract.protocolType)
+    return Type('User', 'address')
 
 
 def parse_tx(root):
