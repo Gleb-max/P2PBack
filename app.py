@@ -22,5 +22,14 @@ def search_transaction(transaction):
     )
 
 
+@app.route('/tx/<transaction>/events')
+@cross_origin()
+def search_transaction_events(transaction):
+    search_result = utils.api_events(transaction)
+    if not search_result:
+        abort(404)
+    return search_result
+
+
 if __name__ == '__main__':
     app.run()

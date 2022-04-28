@@ -21,21 +21,33 @@ def api_search(t: str):
         'query': constants.SEARCH_QUERY,
         'variables': data,
     })
+    if r_t.status_code == 200:
+        # print(
+        #     str(r_t.json()).replace('\'', '"').replace('True', 'true').replace('False', 'false').replace('None',
+        #                                                                                                  'null'),
+        #     file=open('api-ans.json', 'w'))
+        return parse_tx(r_t.json(object_hook=lambda d: SimpleNamespace(**d)))
+    else:
+        print(r_t.status_code)
+        print(r_t.text)
+        return None
+
+
+def api_events(t: str):
+    data = {
+        "tx": t,
+    }
     r_e = authorized_api_request(json={
         'query': constants.EVENTS_QUERY,
         'variables': data,
     })
-    if r_t.status_code == 200:
-        print(
-            str(r_t.json()).replace('\'', '"').replace('True', 'true').replace('False', 'false').replace('None', 'null'),
-            file=open('api-ans.json', 'w'))
-        res = parse_tx(r_t.json(object_hook=lambda d: SimpleNamespace(**d)))
-        if res:
-            res['events'] = sorted(r_e.json()['data']['ethereum']['smartContractEvents'], key=lambda x: (-1,) if not x['eventIndex'] else tuple(map(int, x['eventIndex'].split('-'))))
-        return res
+    if r_e.status_code == 200:
+        return {'events': sorted(r_e.json()['data']['ethereum']['smartContractEvents'],
+                                 key=lambda x: (-1,) if not x['eventIndex'] else tuple(
+                                     map(int, x['eventIndex'].split('-'))))}
     else:
-        print(r_t.status_code)
-        print(r_t.text)
+        print(r_e.status_code)
+        print(r_e.text)
         return None
 
 
