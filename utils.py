@@ -1,4 +1,3 @@
-from functools import lru_cache
 from types import SimpleNamespace
 
 import requests as requests
@@ -14,7 +13,6 @@ def authorized_api_request(_type='POST', **kwargs) -> requests.Response:
     return TYPE_TO_METHOD[_type](constants.API_URL, headers={'X-API-KEY': constants.API_KEY}, **kwargs)
 
 
-# @lru_cache(maxsize=None)
 def api_search(t: str):
     data = {
         "tx": t,
@@ -35,7 +33,6 @@ def api_search(t: str):
         return None
 
 
-# @lru_cache(maxsize=None)
 def api_events(t: str):
     data = {
         "tx": t,
