@@ -14,7 +14,7 @@ def authorized_api_request(_type='POST', **kwargs) -> requests.Response:
     return TYPE_TO_METHOD[_type](constants.API_URL, headers={'X-API-KEY': constants.API_KEY}, **kwargs)
 
 
-@lru_cache(maxsize=None)
+# @lru_cache(maxsize=None)
 def api_search(t: str):
     data = {
         "tx": t,
@@ -35,7 +35,7 @@ def api_search(t: str):
         return None
 
 
-@lru_cache(maxsize=None)
+# @lru_cache(maxsize=None)
 def api_events(t: str):
     data = {
         "tx": t,
@@ -93,8 +93,3 @@ def parse_tx(root):
             'uid': value.uid,
         } for key, value in vertexes_adresses.items()], 'edges': edges}
     return {}
-
-
-if __name__ == '__main__':
-    print(api_search('0xc68d4bd2932473659213d21c6bf788d04bafe6a8f2bc4f12c2032884cddec729'))
-    # print(api_search('99034'))

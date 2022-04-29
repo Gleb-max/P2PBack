@@ -18,6 +18,7 @@ def serve(path):
 @cross_origin()
 def search_transaction(transaction):
     search_result = utils.api_search(transaction)
+    print(search_result)
     if not search_result:
         abort(404)
     # тут так по уебски, потому что jsonify из фласка не принимает default
