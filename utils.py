@@ -60,7 +60,7 @@ def get_vertex_class(edge):
         return Type('Token', edge.smartContract.currency.symbol)
     if edge.smartContract.contractType == 'DEX':
         return Type('Exchanger', edge.smartContract.protocolType)
-    return Type('User', 'address')
+    return Type('User', edge.smartContract.address.address)
 
 
 def parse_tx(root):
