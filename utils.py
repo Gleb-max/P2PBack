@@ -1,6 +1,7 @@
 from types import SimpleNamespace
 
 import requests as requests
+# from web3.auto import w3
 
 import constants
 from models import Vertex, Edge, Type
@@ -63,6 +64,12 @@ def get_vertex_class(edge):
     return Type('User', edge.smartContract.address.address)
 
 
+# def is_user(address: str) -> bool:
+#     # todo
+#     print(w3.eth.get_code(w3.toChecksumAddress(address)))
+#     return True
+
+
 def parse_tx(root):
     vertexes_adresses = dict()
     edges = []
@@ -92,3 +99,10 @@ def parse_tx(root):
             'uid': value.uid,
         } for key, value in vertexes_adresses.items()], 'edges': edges}
     return {}
+
+
+if __name__ == '__main__':
+    pass
+    # is_user('0x1111111254fb6c44bac0bed2854e76f90643097d')
+    # is_user('0xdfa7bd39ded0051b2ecc48f7e17f63ecd165cae1') # user
+    # print(api_search('0xe3549f2ca84ddc8b07dd5d81a9931c35d9f6c25d'))
