@@ -52,8 +52,10 @@ def api_events(t: str):
 
 
 def get_vertex_class(edge):
-    if edge.smartContract.contractType == 'Generic':
-        return Type('Smart contract', edge.smartContract.address.annotation or "method call")
+    if edge.smartContract.address.annotation:
+        return Type(*edge.smartContract.address.annotation.split(', ', 1))
+    # if edge.smartContract.contractType == 'Generic':
+    #     return Type('Smart contract', edge.smartContract.address.annotation or 'unclassified')
     if edge.smartContract.contractType == 'Token':
         return Type('Token', edge.smartContract.currency.symbol)
     if edge.smartContract.contractType == 'DEX':
